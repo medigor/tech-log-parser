@@ -47,13 +47,8 @@ impl<'a> Parser<'a> {
 
     pub fn skip_to(&mut self, ch: u8) -> Option<()> {
         let len = unsafe { self.end.offset_from(self.ptr) } as usize;
-        // let haystack = unsafe { std::slice::from_raw_parts(self.ptr, len) };
-        // let i = memchr::memchr(ch, haystack)?;
-        let r = unsafe { libc::memchr(self.ptr as _, ch as _, len) } as *mut u8;
-        if r.is_null() {
-            return None;
-        }
-        let i = unsafe { r.offset_from(self.ptr) } as usize;
+        let haystack = unsafe { std::slice::from_raw_parts(self.ptr, len) };
+        let i = memchr::memchr(ch, haystack)?;
         self.skip(i + 1)
     }
 

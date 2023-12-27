@@ -1,7 +1,8 @@
 [workspace]
-members = ["parser", "converter", "tests/bench"]
+members = ["parser", "converter", "tests/simple-bench"]
 resolver = "2"
 
 [profile.release]
 lto = true        # Enable Link Time Optimization
 codegen-units = 1 # Reduce number of codegen units to increase optimizations.
+strip = true
