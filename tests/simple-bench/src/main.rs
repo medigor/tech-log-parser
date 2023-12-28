@@ -15,9 +15,10 @@ fn main() {
     parse_file(file_name, &mut |event| {
         count += 1;
         max_properies = max_properies.max(event.properties.len());
+        Ok(())
     })
     .expect("failed to parse file");
-    
+
     println!("Duration: {:?}", start.elapsed());
     println!("count: {count}");
     println!("max_properies: {max_properies}");

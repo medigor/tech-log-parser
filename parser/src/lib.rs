@@ -50,16 +50,20 @@ pub fn parse_record<'a>(parser: &'a mut Parser, date: NaiveDateTime) -> Option<E
     })
 }
 
-pub fn parse_buffer<'a, F>(buffer: &'a [u8], date: NaiveDateTime, action: &'a mut F) -> usize
+pub fn parse_buffer<'a, F>(
+    buffer: &'a [u8],
+    date: NaiveDateTime,
+    action: &'a mut F,
+) -> Result<usize, Box<dyn std::error::Error>>
 where
-    F: FnMut(Event),
+    F: FnMut(Event) -> Result<(), Box<dyn std::error::Error>>,
 {
     let mut parser = Parser::new(buffer);
     loop {
         let position = parser.position();
         match parse_record(&mut parser, date) {
-            Some(event) => action(event),
-            None => return position,
+            Some(event) => action(event)?,
+            None => return Ok(position),
         }
     }
 }
@@ -78,7 +82,7 @@ fn parse_date_file(file_name: impl AsRef<Path>) -> Option<NaiveDateTime> {
 
 pub fn parse_file<F, P>(file_name: P, action: &mut F) -> Result<(), Box<dyn std::error::Error>>
 where
-    F: FnMut(Event),
+    F: FnMut(Event) -> Result<(), Box<dyn std::error::Error>>,
     P: AsRef<Path>,
 {
     let date = parse_date_file(&file_name).ok_or("invalid file name")?;
@@ -97,7 +101,7 @@ where
         }
         let len = len + offset;
 
-        let read = parse_buffer(&buffer[0..len], date, action);
+        let read = parse_buffer(&buffer[0..len], date, action)?;
 
         if read == 0 {
             buffer.extend((0..1024 * 1024).map(|_| 0));
