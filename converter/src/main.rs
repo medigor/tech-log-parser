@@ -71,11 +71,11 @@ fn process_dir(
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut args = std::env::args();
     let Some(source) = &args.nth(1) else {
-        println!("use: converter /path/to/log/dir/source /path/to/log/dir/destination");
+        println!("usage: converter /path/to/log/dir/source /path/to/log/dir/destination");
         return Ok(());
     };
     let Some(dest) = &args.next() else {
-        println!("use: converter /path/to/log/dir/source /path/to/log/dir/destination");
+        println!("usage: converter /path/to/log/dir/source /path/to/log/dir/destination");
         return Ok(());
     };
 

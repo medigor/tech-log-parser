@@ -1,10 +1,8 @@
 use std::time::Instant;
 
-use tech_log_parser::parse_file;
-
 fn main() {
     let Some(file_name) = std::env::args().nth(1) else {
-        println!("use: bench /path/to/file/*.log");
+        println!("usage: simple-bench /path/to/file/*.log");
         return;
     };
 
@@ -12,7 +10,7 @@ fn main() {
     let mut max_properies = 0;
 
     let start = Instant::now();
-    parse_file(file_name, &mut |event| {
+    tech_log_parser::parse_file_with_worker(file_name, &mut |event| {
         count += 1;
         max_properies = max_properies.max(event.properties.len());
         Ok(())

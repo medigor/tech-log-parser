@@ -4,8 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-memchr = "2.6"
+memchr = "2.7"
 serde = { version = "1.0", features = ["derive"] }
-chrono = { version = "0.4.31", features = ["serde"] }
+chrono = { version = "0.4", features = ["serde"] }
 smallvec = { version = "1.11", features = ["serde"] }
-libc = "0.2"
