@@ -53,8 +53,7 @@ impl<'a> Serialize for LogStr<'a> {
     where
         S: serde::Serializer,
     {
-        // let s = self.str();
-        let s = unsafe { std::str::from_utf8_unchecked(&self.str) };
+        let s = self.str();
         serializer.serialize_str(&s)
     }
 }

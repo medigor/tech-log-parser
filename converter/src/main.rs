@@ -1,6 +1,6 @@
 use std::{
     fs::{self, File},
-    io::BufWriter,
+    io::{BufWriter, Write},
     path::Path,
     time::Instant,
 };
@@ -24,6 +24,7 @@ fn convert_file(
     })?;
 
     seq.end()?;
+    buf.flush()?;
     Ok(())
 }
 
