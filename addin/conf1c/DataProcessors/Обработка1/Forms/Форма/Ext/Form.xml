@@ -177,9 +177,8 @@
 								<Table name="ФильтрСвойства" id="82">
 									<Representation>List</Representation>
 									<TitleLocation>Top</TitleLocation>
-									<Height>3</Height>
+									<Width>80</Width>
 									<HorizontalStretch>false</HorizontalStretch>
-									<VerticalStretch>false</VerticalStretch>
 									<EnableStartDrag>true</EnableStartDrag>
 									<EnableDrag>true</EnableDrag>
 									<DataPath>ФильтрСвойства</DataPath>
@@ -290,7 +289,9 @@
 						<Table name="События" id="3">
 							<Representation>List</Representation>
 							<ReadOnly>true</ReadOnly>
+							<Width>80</Width>
 							<AutoInsertNewRow>true</AutoInsertNewRow>
+							<HorizontalStretch>false</HorizontalStretch>
 							<EnableStartDrag>true</EnableStartDrag>
 							<EnableDrag>true</EnableDrag>
 							<DataPath>События</DataPath>
@@ -437,6 +438,9 @@
 								<ContextMenu name="СобытияСвойстваУправлениеПоискомКонтекстноеМеню" id="39"/>
 								<ExtendedTooltip name="СобытияСвойстваУправлениеПоискомРасширеннаяПодсказка" id="40"/>
 							</SearchControlAddition>
+							<Events>
+								<Event name="Selection">СобытияСвойстваВыбор</Event>
+							</Events>
 							<ChildItems>
 								<InputField name="СобытияСвойстваИмя" id="41">
 									<DataPath>Items.События.CurrentData.Свойства.Имя</DataPath>
