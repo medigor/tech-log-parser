@@ -20,7 +20,7 @@ fn convert_file(
 
     tech_log_parser::parse_file(source, &mut |event| {
         seq.serialize_element(&event)?;
-        Ok(())
+        Ok(true)
     })?;
 
     seq.end()?;

@@ -9,10 +9,12 @@ use std::{
 use chrono::{NaiveDate, NaiveDateTime, Timelike};
 use parser::Parser;
 use smallvec::SmallVec;
-use types::Event;
 
 mod parser;
 mod types;
+
+pub use types::Event;
+pub use types::LogStr;
 
 pub fn parse_record<'a>(parser: &'a mut Parser, date: NaiveDateTime) -> Option<Event<'a>> {
     let min = parser.parse_u32(':')?;
@@ -55,16 +57,16 @@ pub fn parse_buffer<'a, F>(
     buffer: &'a [u8],
     date: NaiveDateTime,
     action: &'a mut F,
-) -> Result<usize, Box<dyn std::error::Error>>
+) -> Result<(bool, usize), Box<dyn std::error::Error>>
 where
-    F: FnMut(Event) -> Result<(), Box<dyn std::error::Error>>,
+    F: FnMut(Event) -> Result<bool, Box<dyn std::error::Error>>,
 {
     let mut parser = Parser::new(buffer);
     loop {
         let position = parser.position();
         match parse_record(&mut parser, date) {
-            Some(event) => action(event)?,
-            None => return Ok(position),
+            Some(event) => if !action(event)? { return Ok((false, position))},
+            None => return Ok((true, position)),
         }
     }
 }
@@ -83,7 +85,7 @@ fn parse_date_file(file_name: impl AsRef<Path>) -> Option<NaiveDateTime> {
 
 pub fn parse_file<F, P>(file_name: P, action: &mut F) -> Result<(), Box<dyn std::error::Error>>
 where
-    F: FnMut(Event) -> Result<(), Box<dyn std::error::Error>>,
+    F: FnMut(Event) -> Result<bool, Box<dyn std::error::Error>>,
     P: AsRef<Path>,
 {
     let date = parse_date_file(&file_name).ok_or("invalid file name")?;
@@ -102,7 +104,10 @@ where
         }
         let len = len + offset;
 
-        let read = parse_buffer(&buffer[0..len], date, action)?;
+        let (cont, read) = parse_buffer(&buffer[0..len], date, action)?;
+        if !cont {
+            break;
+        }
 
         if read == 0 {
             buffer.extend((0..buffer.len()).map(|_| 0));
@@ -122,7 +127,7 @@ pub fn parse_file_with_worker<F, P>(
     action: &mut F,
 ) -> Result<(), Box<dyn std::error::Error>>
 where
-    F: FnMut(Event) -> Result<(), Box<dyn std::error::Error>>,
+    F: FnMut(Event) -> Result<bool, Box<dyn std::error::Error>>,
     P: AsRef<Path>,
 {
     let date = parse_date_file(&file_name).ok_or("invalid file name")?;
@@ -166,7 +171,10 @@ where
 
         buf[start..start + rem.len()].copy_from_slice(&rem);
         rem.clear();
-        let mut read = parse_buffer(&buf[start..end], date, action)?;
+        let (mut cont, mut read) = parse_buffer(&buf[start..end], date, action)?;
+        if !cont {
+            break;
+        }
 
         if read == 0 {
             let mut big_buffer = Vec::<u8>::with_capacity(buf.capacity() * 5);
@@ -180,7 +188,10 @@ where
                 }
                 big_buffer.extend(&buf[buf.len() / 2..buf.len() / 2 + size]);
                 parser_sender.send(Some(buf))?;
-                read = parse_buffer(&big_buffer, date, action)?;
+                (cont, read) = parse_buffer(&big_buffer, date, action)?;
+                if !cont {
+                    break;
+                }
                 if read > 0 {
                     rem.extend(&big_buffer[read..]);
                     break;

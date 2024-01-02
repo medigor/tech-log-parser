@@ -2,3 +2,4 @@ target
 .vscode
 .cargo
 Cargo.lock
+addin/conf1c/ConfigDumpInfo.xml

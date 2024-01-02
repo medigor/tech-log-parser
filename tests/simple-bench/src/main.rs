@@ -13,7 +13,7 @@ fn main() {
     tech_log_parser::parse_file_with_worker(file_name, &mut |event| {
         count += 1;
         max_properies = max_properies.max(event.properties.len());
-        Ok(())
+        Ok(true)
     })
     .expect("failed to parse file");
 
