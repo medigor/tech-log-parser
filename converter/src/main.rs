@@ -11,7 +11,7 @@ fn convert_file(
     source: impl AsRef<Path>,
     dest: impl AsRef<Path>,
 ) -> Result<(), Box<dyn std::error::Error>> {
-    fs::create_dir_all(&dest.as_ref().parent().ok_or("Invalid destination")?)?;
+    fs::create_dir_all(dest.as_ref().parent().ok_or("Invalid destination")?)?;
 
     let file = File::create(dest)?;
     let mut buf = BufWriter::new(file);
