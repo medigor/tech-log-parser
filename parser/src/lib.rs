@@ -2,7 +2,6 @@ use std::{
     fs::File,
     io::{Read, Seek},
     path::Path,
-    sync::mpsc,
     time::Duration,
 };
 
@@ -12,6 +11,7 @@ use smallvec::SmallVec;
 
 mod parser;
 mod types;
+mod worker;
 
 pub use types::Event;
 pub use types::LogStr;
@@ -132,38 +132,13 @@ where
 {
     let date = parse_date_file(&file_name).ok_or("invalid file name")?;
 
-    let (parser_sender, thread_receiver) = mpsc::channel::<Option<Vec<u8>>>();
-    let (thread_sender, parser_receiver) = mpsc::channel::<(usize, Vec<u8>)>();
-
-    for _ in 0..3 {
-        let mut buf = Vec::<u8>::with_capacity(1 * 1024 * 1024);
-        buf.extend((0..buf.capacity()).map(|_| 0));
-        parser_sender.send(Some(buf))?;
-    }
-
-    let file_name = file_name.as_ref().to_owned();
-
-    let worker = std::thread::spawn(
-        move || -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
-            let mut file = File::open(file_name)?;
-            file.seek(std::io::SeekFrom::Start(3))?;
-            loop {
-                let Some(mut buf) = thread_receiver.recv()? else {
-                    return Ok(());
-                };
-                let offset = buf.len() / 2;
-                let size = file.read(&mut buf[offset..])?;
-                thread_sender.send((size, buf))?;
-            }
-        },
-    );
+    let mut worker = worker::FileReadWorker::new(file_name)?;
 
     let mut rem = Vec::<u8>::new();
     loop {
-        let (size, mut buf) = parser_receiver.recv()?;
+        let (size, mut buf) = worker.recv()?;
 
         if size == 0 {
-            parser_sender.send(None)?;
             break;
         }
         let end = buf.len() / 2 + size;
@@ -179,15 +154,14 @@ where
         if read == 0 {
             let mut big_buffer = Vec::<u8>::with_capacity(buf.capacity() * 5);
             big_buffer.extend(&buf[start..end]);
-            parser_sender.send(Some(buf))?;
+            worker.send(buf)?;
             loop {
-                let (size, buf) = parser_receiver.recv()?;
+                let (size, buf) = worker.recv()?;
                 if size == 0 {
-                    parser_sender.send(None)?;
                     break;
                 }
                 big_buffer.extend(&buf[buf.len() / 2..buf.len() / 2 + size]);
-                parser_sender.send(Some(buf))?;
+                worker.send(buf)?;
                 (cont, read) = parse_buffer(&big_buffer, date, action)?;
                 if !cont {
                     break;
@@ -199,16 +173,12 @@ where
             }
         } else {
             rem.extend(&buf[start + read..end]);
-            parser_sender.send(Some(buf))?;
+            worker.send(buf)?;
         }
 
-        if worker.is_finished() {
-            match worker.join().expect("thread paniced") {
-                Ok(_) => (),
-                Err(err) => return Err(err),
-            }
+        if worker.is_finished()? {
             break;
-        };
+        }
     }
 
     Ok(())
