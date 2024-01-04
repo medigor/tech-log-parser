@@ -1,0 +1,57 @@
+﻿55:42.302093-7,DBV8DBEng,0,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Func=readFile,CatName=Config,FileName=versions
+55:42.302094-0,EXCP,0,process=1cv8c,OSThread=20588,Exception=9db1fa37-b455-4f3f-b8dd-7de0ea7d6da3,Descr="src\backend\src\ClientFileCacheImpl.cpp(280):
+9db1fa37-b455-4f3f-b8dd-7de0ea7d6da3: Файл не обнаружен 'v8stg64://c:/1/DynamicalWorkCache': src\core\src\Storage64.cpp(3132)"
+55:42.302097-1,DBV8DBEng,1,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Func=beginTransaction
+55:42.302099-1,DBV8DBEng,1,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Func=selectFileName,FileName=version
+55:42.302101-1,DBV8DBEng,1,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Func=commitTransaction
+55:42.302102-7,DBV8DBEng,0,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Func=readFile,CatName=ConfigSave,FileName=version
+55:42.302105-1,DBV8DBEng,1,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Func=beginTransaction
+55:42.302107-1,DBV8DBEng,1,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Func=selectFileName,FileName=versions
+55:42.302109-1,DBV8DBEng,1,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Func=commitTransaction
+55:42.302110-7,DBV8DBEng,0,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Func=readFile,CatName=ConfigSave,FileName=versions
+55:42.302111-0,EXCP,0,process=1cv8c,OSThread=20588,Exception=9db1fa37-b455-4f3f-b8dd-7de0ea7d6da3,Descr="src\backend\src\ClientFileCacheImpl.cpp(280):
+9db1fa37-b455-4f3f-b8dd-7de0ea7d6da3: Файл не обнаружен 'v8stg64://c:/3/DynamicalWorkCache': src\core\src\Storage64.cpp(3095)"
+55:42.302114-1,DBV8DBEng,1,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Func=beginTransaction
+55:42.302116-1,DBV8DBEng,1,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Func=selectFileName,FileName=root
+55:42.302118-1,DBV8DBEng,1,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Func=commitTransaction
+55:42.302119-7,DBV8DBEng,0,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Func=readFile,CatName=Config,FileName=root
+55:42.302122-1,DBV8DBEng,1,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Func=beginTransaction
+55:42.302124-1,DBV8DBEng,1,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Func=selectFileName,FileName=DBNames
+55:42.302126-1,DBV8DBEng,1,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Func=commitTransaction
+55:42.302127-7,DBV8DBEng,0,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Func=readFile,CatName=Params,FileName=DBNames
+55:42.302130-1,DBV8DBEng,1,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Func=beginTransaction
+55:42.302132-1,DBV8DBEng,1,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Func=selectFileName,FileName=DBNames-Ext-*
+55:42.302134-1,DBV8DBEng,1,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Func=commitTransaction
+55:42.302135-7,DBV8DBEng,0,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Func=searchFile,CatName=Params,FileWild=DBNames-Ext-*
+55:42.302138-1,DBV8DBEng,1,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Func=beginTransaction
+55:42.302140-1,DBV8DBEng,1,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Func=selectFileName,FileName=convertPhase
+55:42.302142-1,DBV8DBEng,1,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Func=commitTransaction
+55:42.302143-7,DBV8DBEng,0,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Func=readFile,CatName=Config,FileName=convertPhase
+55:42.302146-1,DBV8DBEng,1,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Func=beginTransaction
+55:42.302148-1,DBV8DBEng,1,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Func=selectFileName,FileName=commit
+55:42.302150-1,DBV8DBEng,1,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Func=commitTransaction
+55:42.302151-7,DBV8DBEng,0,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Func=searchFile,CatName=Config,FileWild=commit
+55:42.302153-1,DBV8DBEng,0,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Sql='SELECT TOP 1 ID, Name, Descr, OSName, Changed, RolesID, Show, Data, EAuth, AdmRole, UsSprH
+FROM v8users
+WHERE EAuth IS NULL OR AdmRole IS NULL OR UsSprH IS NULL',NParams=0,Rows=0
+55:42.302156-1,DBV8DBEng,1,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Func=beginTransaction
+55:42.302158-1,DBV8DBEng,1,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Func=selectFileName,FileName=users.usr
+55:42.302160-1,DBV8DBEng,1,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Func=commitTransaction
+55:42.302161-7,DBV8DBEng,0,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Func=readFile,CatName=Params,FileName=users.usr
+55:42.302163-1,DBV8DBEng,0,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Sql='SELECT CurrentSchema, NewGenCreated, NewGenDropped FROM SchemaStorage WHERE SchemaID = 0',NParams=0,Rows=1
+55:42.302165-1,DBV8DBEng,0,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Func=restoreObject,tableName=ClearAggregates
+55:42.302168-1,DBV8DBEng,1,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Sql='SELECT Status FROM SchemaStorage WHERE SchemaID = 0',NParams=0,Rows=1
+55:42.302169-3,SDBL,0,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Sdbl=GET NGENERATIONS,Rows=1
+55:42.317001-1,DBV8DBEng,0,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Sql='SELECT MAX(Changed)
+FROM v8users',NParams=0,Rows=1
+55:42.317003-1,DBV8DBEng,0,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Sql='SELECT TOP 1 ID, Name, Descr, OSName, Changed, RolesID, Show, Data, EAuth, AdmRole, UsSprH
+FROM v8users
+WHERE ID >= 0x00000000000000000000000000000000 AND ID <> 0x952A5019EAE6A1F74023E7966E3EE1DE
+ORDER BY ID',NParams=0,Rows=0
+55:42.317005-1,LIC,0,process=1cv8c,OSThread=20588,Func=getLicense,res=error,txt='0, 3425ebd8-d995-4c79-acc9-f3a13b726c31, license acquisition temporary unavailable, remote Application'
+55:42.317006-0,EXCP,0,process=1cv8c,OSThread=20588,Exception=SeanceContextException,Descr=Не найдена лицензия. Не обнаружен ключ защиты программы или полученная программная лицензия!
+55:42.317007-0,EXCP,0,process=1cv8c,OSThread=20588,Exception=60c686dc-798f-4d17-aadb-a90156a16eb8,Descr='src\backbas\src\SeanceContextBasImpl.cpp(4336):
+60c686dc-798f-4d17-aadb-a90156a16eb8: Не найдена лицензия. Не обнаружен ключ защиты программы или полученная программная лицензия!'
+55:42.317009-0,SESN,0,process=1cv8c,OSThread=20588,Func=Start,IB=C:\Projects\1с\Базы\Тест1,Appl=1CV8C,Nmb=1,ID=3425ebd8-d995-4c79-acc9-f3a13b726c31
+55:42.317013-1,DBV8DBEng,1,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Func=beginTransaction
+55:42.317015-1,DBV8DBEng,1,process=1cv8c,OSThread=20588,DBMS=DBV8DBEng,DataBase=Тест1,Trans=0,Func=selectFileName,FileName=ibparams.inf
