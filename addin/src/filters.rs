@@ -1,10 +1,12 @@
 use chrono::NaiveDateTime;
-use serde::Deserialize;
+use regex::{Regex, RegexBuilder};
+use serde::{de::Visitor, Deserialize};
 
 #[derive(Deserialize)]
 pub enum StrFilter {
     Equal(String),
     Contains(String),
+    Match(Match),
     InList(Vec<String>),
 }
 
@@ -13,8 +15,50 @@ impl StrFilter {
         match self {
             StrFilter::Equal(s) => s == value,
             StrFilter::Contains(s) => value.contains(s),
+            StrFilter::Match(m) => m.0.is_match(value),
             StrFilter::InList(s) => s.iter().any(|x| x == value),
         }
+    }
+}
+
+pub struct Match(Regex);
+
+impl<'de> Deserialize<'de> for Match {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        deserializer.deserialize_string(MatchVisitor {})
+    }
+}
+
+struct MatchVisitor {}
+
+impl<'de> Visitor<'de> for MatchVisitor {
+    type Value = Match;
+
+    fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
+        formatter.write_str("a regular expression")
+    }
+
+    fn visit_str<E>(self, v: &str) -> Result<Self::Value, E>
+    where
+        E: serde::de::Error,
+    {
+        RegexBuilder::new(v)
+            .crlf(true)
+            .case_insensitive(true)
+            .dot_matches_new_line(true)
+            .build()
+            .map(|regex| Match(regex))
+            .map_err(serde::de::Error::custom)
+    }
+
+    fn visit_string<E>(self, v: String) -> Result<Self::Value, E>
+    where
+        E: serde::de::Error,
+    {
+        self.visit_str(&v)
     }
 }
 

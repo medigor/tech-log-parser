@@ -224,7 +224,7 @@
 		</Properties>
 		<ChildObjects>
 			<Language>Русский</Language>
-			<DataProcessor>Обработка1</DataProcessor>
+			<DataProcessor>ТехЖурнал</DataProcessor>
 		</ChildObjects>
 	</Configuration>
 </MetaDataObject>
