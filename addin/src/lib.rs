@@ -1,3 +1,5 @@
+#![allow(clippy::missing_safety_doc)]
+
 mod addin_parser;
 mod filters;
 

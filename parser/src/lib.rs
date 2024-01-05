@@ -17,12 +17,12 @@ pub use types::Event;
 pub use types::LogStr;
 
 pub fn parse_record<'a>(parser: &'a mut Parser, date: NaiveDateTime) -> Option<Event<'a>> {
-    let min = parser.parse_u32(':')?;
-    let sec = parser.parse_u32('.')?;
-    let msec = parser.parse_u32('-')?;
-    let duration = parser.parse_u64(',')?;
+    let min = parser.parse_number(':')?;
+    let sec = parser.parse_number('.')?;
+    let msec: u32 = parser.parse_number('-')?;
+    let duration = parser.parse_number(',')?;
     let name = parser.parse_name(',')?;
-    let level = parser.parse_u32(',')?;
+    let level = parser.parse_number(',')?;
 
     let mut properties = SmallVec::new();
 

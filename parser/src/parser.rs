@@ -68,26 +68,17 @@ impl<'a> Parser<'a> {
         }
     }
 
-    pub fn parse_u32(&mut self, delimiter: char) -> Option<u32> {
-        let mut number: u32 = 0;
+    pub fn parse_number<T>(&mut self, delimiter: char) -> Option<T>
+    where
+        T: Default + std::ops::Mul<T, Output = T> + std::ops::Add<T, Output = T> + From<u8>,
+    {
+        let mut number: T = T::default();
         loop {
             let next = self.next()?;
             if next == delimiter as _ {
                 break;
             }
-            number = number * 10 + (next - b'0') as u32;
-        }
-        Some(number)
-    }
-
-    pub fn parse_u64(&mut self, delimiter: char) -> Option<u64> {
-        let mut number: u64 = 0;
-        loop {
-            let next = self.next()?;
-            if next == delimiter as _ {
-                break;
-            }
-            number = number * 10 + (next - b'0') as u64;
+            number = number * T::from(10) + T::from(next - b'0');
         }
         Some(number)
     }
@@ -154,12 +145,12 @@ mod tests {
             let buf = b"57:20.886000-123,EXCP,0,process=rphost,OSThread=252,Exception=0874860b-2b41-45e1-bc2b-6e186eb37771\r\n";
             let mut parser = Parser::new(buf);
 
-            let min = parser.parse_u32(':')?;
-            let sec = parser.parse_u32('.')?;
-            let msec = parser.parse_u32('-')?;
-            let duration = parser.parse_u32(',')?;
+            let min: u32 = parser.parse_number(':')?;
+            let sec: u32 = parser.parse_number('.')?;
+            let msec: u32 = parser.parse_number('-')?;
+            let duration: u32 = parser.parse_number(',')?;
             let name = parser.parse_name(',')?;
-            let level = parser.parse_u32(',')?;
+            let level: u32 = parser.parse_number(',')?;
 
             assert_eq!(min, 57);
             assert_eq!(sec, 20);

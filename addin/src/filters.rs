@@ -21,7 +21,8 @@ impl StrFilter {
     }
 }
 
-pub struct Match(Regex);
+// performance is better with Box
+pub struct Match(Box<Regex>);
 
 impl<'de> Deserialize<'de> for Match {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
@@ -50,15 +51,8 @@ impl<'de> Visitor<'de> for MatchVisitor {
             .case_insensitive(true)
             .dot_matches_new_line(true)
             .build()
-            .map(|regex| Match(regex))
+            .map(|regex| Match(Box::new(regex)))
             .map_err(serde::de::Error::custom)
-    }
-
-    fn visit_string<E>(self, v: String) -> Result<Self::Value, E>
-    where
-        E: serde::de::Error,
-    {
-        self.visit_str(&v)
     }
 }
 
