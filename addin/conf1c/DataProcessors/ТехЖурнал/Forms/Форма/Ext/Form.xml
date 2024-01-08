@@ -47,14 +47,14 @@
 					<ChildItems>
 						<InputField name="ФайлКомпоненты" id="47">
 							<DataPath>ФайлКомпоненты</DataPath>
-							<AutoMaxWidth>false</AutoMaxWidth>
+							<Width>67</Width>
 							<ExtendedEditMultipleValues>true</ExtendedEditMultipleValues>
 							<ContextMenu name="ФайлКомпонентыКонтекстноеМеню" id="48"/>
 							<ExtendedTooltip name="ФайлКомпонентыРасширеннаяПодсказка" id="49"/>
 						</InputField>
 						<InputField name="ФайлЛога" id="50">
 							<DataPath>ФайлЛога</DataPath>
-							<AutoMaxWidth>false</AutoMaxWidth>
+							<Width>67</Width>
 							<ExtendedEditMultipleValues>true</ExtendedEditMultipleValues>
 							<ContextMenu name="ФайлЛогаКонтекстноеМеню" id="51"/>
 							<ExtendedTooltip name="ФайлЛогаРасширеннаяПодсказка" id="52"/>
@@ -216,6 +216,9 @@
 										<ContextMenu name="ФильтрСвойстваУправлениеПоискомКонтекстноеМеню" id="93"/>
 										<ExtendedTooltip name="ФильтрСвойстваУправлениеПоискомРасширеннаяПодсказка" id="94"/>
 									</SearchControlAddition>
+									<Events>
+										<Event name="OnStartEdit">ФильтрСвойстваПриНачалеРедактирования</Event>
+									</Events>
 									<ChildItems>
 										<InputField name="ФильтрСвойстваИмя" id="95">
 											<DataPath>ФильтрСвойства.Имя</DataPath>
@@ -348,61 +351,52 @@
 									<Group>InCell</Group>
 									<ExtendedTooltip name="СобытияГруппа1РасширеннаяПодсказка" id="57"/>
 									<ChildItems>
-										<InputField name="СобытияДата" id="16">
+										<LabelField name="СобытияДата" id="16">
 											<DataPath>События.Дата</DataPath>
 											<EditMode>EnterOnInput</EditMode>
-											<ExtendedEditMultipleValues>true</ExtendedEditMultipleValues>
 											<ContextMenu name="СобытияДатаКонтекстноеМеню" id="17"/>
 											<ExtendedTooltip name="СобытияДатаРасширеннаяПодсказка" id="18"/>
-										</InputField>
-										<InputField name="СобытияДатаМкс" id="53">
+										</LabelField>
+										<LabelField name="СобытияДатаМкс" id="53">
 											<DataPath>События.ДатаМкс</DataPath>
 											<EditMode>EnterOnInput</EditMode>
-											<ExtendedEditMultipleValues>true</ExtendedEditMultipleValues>
 											<Format>
 												<v8:item>
 													<v8:lang>ru</v8:lang>
 													<v8:content>ЧЦ=6; ЧВН=</v8:content>
 												</v8:item>
 											</Format>
-											<EditFormat>
-												<v8:item>
-													<v8:lang>ru</v8:lang>
-													<v8:content>ЧЦ=6; ЧВН=</v8:content>
-												</v8:item>
-											</EditFormat>
 											<ContextMenu name="СобытияДатаМксКонтекстноеМеню" id="54"/>
 											<ExtendedTooltip name="СобытияДатаМксРасширеннаяПодсказка" id="55"/>
-										</InputField>
+										</LabelField>
 									</ChildItems>
 								</ColumnGroup>
-								<InputField name="СобытияИмя" id="19">
+								<LabelField name="СобытияИмя" id="19">
 									<DataPath>События.Имя</DataPath>
 									<EditMode>EnterOnInput</EditMode>
-									<ExtendedEditMultipleValues>true</ExtendedEditMultipleValues>
 									<ContextMenu name="СобытияИмяКонтекстноеМеню" id="20"/>
 									<ExtendedTooltip name="СобытияИмяРасширеннаяПодсказка" id="21"/>
-								</InputField>
-								<InputField name="СобытияУровень" id="22">
+								</LabelField>
+								<LabelField name="СобытияУровень" id="22">
 									<DataPath>События.Уровень</DataPath>
 									<EditMode>EnterOnInput</EditMode>
-									<ExtendedEditMultipleValues>true</ExtendedEditMultipleValues>
 									<ContextMenu name="СобытияУровеньКонтекстноеМеню" id="23"/>
 									<ExtendedTooltip name="СобытияУровеньРасширеннаяПодсказка" id="24"/>
-								</InputField>
-								<InputField name="СобытияДлительность" id="25">
+								</LabelField>
+								<LabelField name="СобытияДлительность" id="25">
 									<DataPath>События.Длительность</DataPath>
 									<EditMode>EnterOnInput</EditMode>
-									<ExtendedEditMultipleValues>true</ExtendedEditMultipleValues>
 									<ContextMenu name="СобытияДлительностьКонтекстноеМеню" id="26"/>
 									<ExtendedTooltip name="СобытияДлительностьРасширеннаяПодсказка" id="27"/>
-								</InputField>
+								</LabelField>
 							</ChildItems>
 						</Table>
 						<Table name="СобытияСвойства" id="28">
 							<Representation>List</Representation>
 							<ReadOnly>true</ReadOnly>
+							<Width>80</Width>
 							<AutoInsertNewRow>true</AutoInsertNewRow>
+							<HorizontalStretch>false</HorizontalStretch>
 							<EnableStartDrag>true</EnableStartDrag>
 							<EnableDrag>true</EnableDrag>
 							<DataPath>Items.События.CurrentData.Свойства</DataPath>
@@ -450,21 +444,21 @@
 								<Event name="Selection">СобытияСвойстваВыбор</Event>
 							</Events>
 							<ChildItems>
-								<InputField name="СобытияСвойстваИмя" id="41">
+								<LabelField name="СобытияСвойстваИмя" id="41">
 									<DataPath>Items.События.CurrentData.Свойства.Имя</DataPath>
 									<EditMode>EnterOnInput</EditMode>
 									<Width>20</Width>
-									<ExtendedEditMultipleValues>true</ExtendedEditMultipleValues>
+									<HorizontalStretch>false</HorizontalStretch>
 									<ContextMenu name="СобытияСвойстваИмяКонтекстноеМеню" id="42"/>
 									<ExtendedTooltip name="СобытияСвойстваИмяРасширеннаяПодсказка" id="43"/>
-								</InputField>
-								<InputField name="СобытияСвойстваЗначение" id="44">
+								</LabelField>
+								<LabelField name="СобытияСвойстваЗначение" id="44">
 									<DataPath>Items.События.CurrentData.Свойства.Значение</DataPath>
 									<EditMode>EnterOnInput</EditMode>
-									<ExtendedEditMultipleValues>true</ExtendedEditMultipleValues>
+									<AutoCellHeight>true</AutoCellHeight>
 									<ContextMenu name="СобытияСвойстваЗначениеКонтекстноеМеню" id="45"/>
 									<ExtendedTooltip name="СобытияСвойстваЗначениеРасширеннаяПодсказка" id="46"/>
-								</InputField>
+								</LabelField>
 							</ChildItems>
 						</Table>
 					</ChildItems>
