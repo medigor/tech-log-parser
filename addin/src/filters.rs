@@ -66,7 +66,7 @@ pub struct PropFilter {
 impl PropFilter {
     pub fn check(&self, props: &[(&str, tech_log_parser::LogStr<'_>)]) -> bool {
         for (name, value) in props {
-            if name == &self.name && self.filter.check(&value.str()) {
+            if name.eq_ignore_ascii_case(&self.name) && self.filter.check(&value.str()) {
                 return true;
             }
         }
