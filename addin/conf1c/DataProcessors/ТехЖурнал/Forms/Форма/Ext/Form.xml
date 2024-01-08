@@ -380,6 +380,12 @@
 								<LabelField name="СобытияУровень" id="22">
 									<DataPath>События.Уровень</DataPath>
 									<EditMode>EnterOnInput</EditMode>
+									<Format>
+										<v8:item>
+											<v8:lang>ru</v8:lang>
+											<v8:content>ЧН=0</v8:content>
+										</v8:item>
+									</Format>
 									<ContextMenu name="СобытияУровеньКонтекстноеМеню" id="23"/>
 									<ExtendedTooltip name="СобытияУровеньРасширеннаяПодсказка" id="24"/>
 								</LabelField>
