@@ -1,3 +1,5 @@
+#![cfg(not(miri))]
+
 use std::time::Duration;
 
 use chrono::NaiveDateTime;
