@@ -35,7 +35,7 @@ impl<'de> Deserialize<'de> for Match {
 
 struct MatchVisitor {}
 
-impl<'de> Visitor<'de> for MatchVisitor {
+impl Visitor<'_> for MatchVisitor {
     type Value = Match;
 
     fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {

@@ -12,7 +12,7 @@ pub struct Event<'a> {
     pub properties: SmallVec<[(&'a str, LogStr<'a>); 32]>,
 }
 
-impl<'a> Serialize for Event<'a> {
+impl Serialize for Event<'_> {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
         S: Serializer,
@@ -35,7 +35,7 @@ pub struct LogStr<'a> {
 }
 
 impl<'a> LogStr<'a> {
-    pub fn new(str: &'a [u8], replace_char: char) -> LogStr {
+    pub fn new(str: &'a [u8], replace_char: char) -> LogStr<'a> {
         LogStr { str, replace_char }
     }
     pub fn str(&self) -> Cow<'a, str> {
@@ -48,7 +48,7 @@ impl<'a> LogStr<'a> {
     }
 }
 
-impl<'a> Serialize for LogStr<'a> {
+impl Serialize for LogStr<'_> {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
         S: serde::Serializer,
