@@ -1,6 +1,6 @@
 use std::error::Error;
 
-use addin1c::{name, AddinResult, MethodInfo, PropInfo, SimpleAddin, Variant};
+use addin1c::{AddinResult, CStr1C, MethodInfo, PropInfo, SimpleAddin, Variant, name};
 
 use crate::filters;
 
@@ -29,8 +29,8 @@ impl Parser {
         limit: &mut Variant,
         ret_value: &mut Variant,
     ) -> AddinResult {
-        use serde::ser::SerializeSeq;
         use serde::Serializer;
+        use serde::ser::SerializeSeq;
 
         let file_name = file_name.get_string()?;
         let filter = filter.get_blob()?;
@@ -72,7 +72,7 @@ impl Parser {
 }
 
 impl SimpleAddin for Parser {
-    fn name() -> &'static [u16] {
+    fn name() -> &'static CStr1C {
         name!("TechLogParser")
     }
 

@@ -1,6 +1,6 @@
 use std::{
     fs::File,
-    io::{Read, Seek},
+    io::{ErrorKind, Read, Seek},
     path::Path,
     time::Duration,
 };
@@ -65,14 +65,26 @@ where
     loop {
         let position = parser.position();
         match parse_record(&mut parser, date) {
-            Some(event) => if !action(event)? { return Ok((false, position))},
+            Some(event) => {
+                if !action(event)? {
+                    return Ok((false, position));
+                }
+            }
             None => return Ok((true, position)),
         }
     }
 }
 
 fn parse_date_file(file_name: impl AsRef<Path>) -> Option<NaiveDateTime> {
-    let name = Path::new(file_name.as_ref()).file_name()?.to_str()?;
+    let name = Path::new(file_name.as_ref()).file_stem()?.to_str()?;
+    if name.len() < 8 {
+        return None;
+    }
+    let (_, name) = name.split_at_checked(name.len() - 8)?;
+    if !name.chars().all(char::is_numeric) {
+        return None;
+    }
+
     let year: i32 = name[..2].parse().ok()?;
     let month: u32 = name[2..4].parse().ok()?;
     let day: u32 = name[4..6].parse().ok()?;
@@ -91,10 +103,24 @@ where
     let date = parse_date_file(&file_name).ok_or("invalid file name")?;
 
     let mut reader = File::open(&file_name)?;
-    reader.seek(std::io::SeekFrom::Start(3))?;
+    let mut bom = [0u8; 3];
 
-    let mut buffer = Vec::<u8>::with_capacity(1024 * 1024);
-    buffer.extend((0..buffer.capacity()).map(|_| 0));
+    match reader.read_exact(&mut bom) {
+        Ok(_) => (),
+        Err(err) => {
+            if err.kind() == ErrorKind::UnexpectedEof {
+                return Ok(());
+            } else {
+                return Err(err.into());
+            }
+        }
+    };
+
+    if bom != [0xEF, 0xBB, 0xBF] {
+        reader.seek(std::io::SeekFrom::Start(0))?;
+    };
+
+    let mut buffer = vec![0u8; 1024 * 1024];
     let mut offset = 0usize;
 
     loop {

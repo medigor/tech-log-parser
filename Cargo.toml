@@ -1,6 +1,6 @@
 [workspace]
 members = ["parser", "converter", "tests/simple-bench", "addin"]
-resolver = "2"
+resolver = "3"
 
 [profile.release]
 lto = true        # Enable Link Time Optimization

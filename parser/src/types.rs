@@ -1,7 +1,7 @@
 use std::{borrow::Cow, time::Duration};
 
 use chrono::NaiveDateTime;
-use serde::{ser::SerializeStruct, Serialize, Serializer};
+use serde::{Serialize, Serializer, ser::SerializeStruct};
 use smallvec::SmallVec;
 
 pub struct Event<'a> {

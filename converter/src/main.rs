@@ -5,7 +5,7 @@ use std::{
     time::Instant,
 };
 
-use serde::{ser::SerializeSeq, Serializer};
+use serde::{Serializer, ser::SerializeSeq};
 
 fn convert_file(
     source: impl AsRef<Path>,
@@ -37,7 +37,15 @@ fn file_name_valid(name: impl AsRef<Path>) -> bool {
             .as_ref()
             .file_stem()
             .and_then(|x| x.to_str())
-            .map(|x| x.len() == 8 && x.chars().all(char::is_numeric))
+            .map(|x| {
+                if x.len() < 8 {
+                    return false;
+                }
+                let Some((_, x)) = x.split_at_checked(x.len() - 8) else {
+                    return false;
+                };
+                x.chars().all(char::is_numeric)
+            })
             .unwrap_or_default()
 }
 
