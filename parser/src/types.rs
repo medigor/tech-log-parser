@@ -1,7 +1,7 @@
 use std::{borrow::Cow, time::Duration};
 
 use chrono::NaiveDateTime;
-use serde::{ser::SerializeStruct, Serialize, Serializer};
+use serde::{Serialize, Serializer, ser::SerializeStruct};
 use smallvec::SmallVec;
 
 pub struct Event<'a> {
@@ -35,7 +35,7 @@ pub struct LogStr<'a> {
 }
 
 impl<'a> LogStr<'a> {
-    pub fn new(str: &'a [u8], replace_char: char) -> LogStr {
+    pub fn new(str: &'a [u8], replace_char: char) -> LogStr<'a> {
         LogStr { str, replace_char }
     }
     pub fn str(&self) -> Cow<'a, str> {

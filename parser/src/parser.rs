@@ -10,7 +10,7 @@ pub struct Parser<'a> {
 }
 
 impl<'a> Parser<'a> {
-    pub fn new(buffer: &'a [u8]) -> Parser {
+    pub fn new(buffer: &'a [u8]) -> Parser<'a> {
         let ptr = buffer.as_ptr();
         let end = unsafe { ptr.add(buffer.len()) };
         Parser {
