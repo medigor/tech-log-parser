@@ -2,19 +2,22 @@ use std::{io::Read, path::Path, time::Duration};
 
 use chrono::{NaiveDate, NaiveDateTime, Timelike};
 use parser::Parser;
-use smallvec::SmallVec;
 
 mod io;
 mod parser;
 mod types;
 mod worker;
 
+pub use parser::EndError;
+pub use parser::ParseError;
+pub use parser::ParseResult;
 pub use types::Event;
 pub use types::LogStr;
 
 use crate::io::open_file;
 
-pub fn parse_record<'a>(parser: &'a mut Parser, date: NaiveDateTime) -> Option<Event<'a>> {
+pub fn parse_record<'a>(parser: &'a mut Parser, date: NaiveDateTime) -> ParseResult<Event<'a>> {
+    parser.prop_buf.clear();
     let min = parser.parse_number(':')?;
     let sec = parser.parse_number('.')?;
     let msec: u32 = parser.parse_number('-')?;
@@ -22,12 +25,10 @@ pub fn parse_record<'a>(parser: &'a mut Parser, date: NaiveDateTime) -> Option<E
     let name = parser.parse_name(',')?;
     let level = parser.parse_number(',')?;
 
-    let mut properties = SmallVec::new();
-
     loop {
         let name = parser.parse_name('=')?;
         let value = parser.parse_value()?;
-        properties.push((name, value));
+        parser.prop_buf.push((name, value));
 
         if parser.peek()? == b'\n' {
             parser.skip(1)?;
@@ -40,9 +41,10 @@ pub fn parse_record<'a>(parser: &'a mut Parser, date: NaiveDateTime) -> Option<E
         .and_then(|date| date.with_minute(min))
         .and_then(|date| date.with_second(sec))
         .and_then(|date| date.with_nanosecond(msec * 1000))
-        .expect("failed to parse date");
+        .ok_or(ParseError::InvalidFormat)?;
+    let properties = parser.prop_buf.as_slice();
 
-    Some(Event {
+    Ok(Event {
         date,
         duration: Duration::from_micros(duration),
         name,
@@ -63,12 +65,17 @@ where
     loop {
         let position = parser.position();
         match parse_record(&mut parser, date) {
-            Some(event) => {
+            Ok(event) => {
                 if !action(event)? {
                     return Ok((false, position));
                 }
             }
-            None => return Ok((true, position)),
+            Err(ParseError::End) => return Ok((true, position)),
+            Err(ParseError::InvalidFormat) => {
+                if parser.skip_to(b'\n').is_err() {
+                    return Ok((true, position));
+                }
+            }
         }
     }
 }

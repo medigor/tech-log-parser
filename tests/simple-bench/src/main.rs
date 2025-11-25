@@ -1,9 +1,9 @@
-use std::time::Instant;
+use std::{error::Error, time::Instant};
 
-fn main() {
+fn main() -> Result<(), Box<dyn Error>> {
     let Some(file_name) = std::env::args().nth(1) else {
         println!("usage: simple-bench /path/to/file/*.log");
-        return;
+        return Ok(());
     };
 
     let mut count: usize = 0;
@@ -14,10 +14,11 @@ fn main() {
         count += 1;
         max_properies = max_properies.max(event.properties.len());
         Ok(true)
-    })
-    .expect("failed to parse file");
+    })?;
 
     println!("Duration: {:?}", start.elapsed());
     println!("count: {count}");
     println!("max_properies: {max_properies}");
+
+    Ok(())
 }

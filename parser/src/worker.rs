@@ -47,18 +47,15 @@ impl FileReadWorker {
         })
     }
 
-    #[inline(always)]
     pub fn send(&self, buf: Vec<u8>) -> Result<(), Box<dyn Error>> {
         self.sender.send(Some(buf))?;
         Ok(())
     }
 
-    #[inline(always)]
     pub fn recv(&self) -> Result<(usize, Vec<u8>), Box<dyn Error>> {
         Ok(self.receiver.recv()?)
     }
 
-    #[inline(always)]
     pub fn is_finished(&mut self) -> Result<bool, Box<dyn Error>> {
         let Some(worker) = &self.worker else {
             return Ok(true);
@@ -72,7 +69,7 @@ impl FileReadWorker {
             return Ok(true);
         };
 
-        match worker.join().expect("thread paniced") {
+        match worker.join().map_err(|_| "thread paniced")? {
             Ok(_) => (),
             Err(err) => return Err(err.to_string().into()),
         }

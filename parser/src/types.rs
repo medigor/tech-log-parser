@@ -2,14 +2,13 @@ use std::{borrow::Cow, time::Duration};
 
 use chrono::NaiveDateTime;
 use serde::{Serialize, Serializer, ser::SerializeStruct};
-use smallvec::SmallVec;
 
 pub struct Event<'a> {
     pub date: NaiveDateTime,
     pub duration: Duration,
     pub name: &'a str,
     pub level: u32,
-    pub properties: SmallVec<[(&'a str, LogStr<'a>); 32]>,
+    pub properties: &'a[(&'a str, LogStr<'a>)]
 }
 
 impl Serialize for Event<'_> {

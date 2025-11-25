@@ -118,7 +118,7 @@ impl Filter {
             Filter::Date(filter) => filter.check(&event.date),
             Filter::Duration(filter) => filter.check(&event.duration.as_micros()),
             Filter::Name(filter) => filter.check(event.name),
-            Filter::Prop(filter) => filter.check(event.properties.as_slice()),
+            Filter::Prop(filter) => filter.check(event.properties),
         }
     }
 }
