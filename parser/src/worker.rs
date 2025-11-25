@@ -1,11 +1,12 @@
 use std::{
     error::Error,
-    fs::File,
-    io::{Read, Seek},
+    io::Read,
     path::Path,
     sync::mpsc::{self, Receiver, Sender},
     thread::JoinHandle,
 };
+
+use crate::io::open_file;
 
 pub struct FileReadWorker {
     worker: Option<JoinHandle<Result<(), Box<dyn Error + Send + Sync>>>>,
@@ -19,8 +20,7 @@ impl FileReadWorker {
         let (thread_sender, parser_receiver) = mpsc::channel::<(usize, Vec<u8>)>();
 
         for _ in 0..3 {
-            let mut buf = Vec::<u8>::with_capacity(1024 * 1024);
-            buf.extend((0..buf.capacity()).map(|_| 0));
+            let buf = vec![0; 1024 * 1024];
             parser_sender.send(Some(buf))?;
         }
 
@@ -28,8 +28,7 @@ impl FileReadWorker {
 
         let worker = std::thread::spawn(
             move || -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
-                let mut file = File::open(file_name)?;
-                file.seek(std::io::SeekFrom::Start(3))?;
+                let mut file = open_file(file_name)?;
                 loop {
                     let Some(mut buf) = thread_receiver.recv()? else {
                         return Ok(());

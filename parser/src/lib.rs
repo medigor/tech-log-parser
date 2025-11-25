@@ -1,20 +1,18 @@
-use std::{
-    fs::File,
-    io::{ErrorKind, Read, Seek},
-    path::Path,
-    time::Duration,
-};
+use std::{io::Read, path::Path, time::Duration};
 
 use chrono::{NaiveDate, NaiveDateTime, Timelike};
 use parser::Parser;
 use smallvec::SmallVec;
 
+mod io;
 mod parser;
 mod types;
 mod worker;
 
 pub use types::Event;
 pub use types::LogStr;
+
+use crate::io::open_file;
 
 pub fn parse_record<'a>(parser: &'a mut Parser, date: NaiveDateTime) -> Option<Event<'a>> {
     let min = parser.parse_number(':')?;
@@ -102,29 +100,13 @@ where
 {
     let date = parse_date_file(&file_name).ok_or("invalid file name")?;
 
-    let mut reader = File::open(&file_name)?;
-    let mut bom = [0u8; 3];
-
-    match reader.read_exact(&mut bom) {
-        Ok(_) => (),
-        Err(err) => {
-            if err.kind() == ErrorKind::UnexpectedEof {
-                return Ok(());
-            } else {
-                return Err(err.into());
-            }
-        }
-    };
-
-    if bom != [0xEF, 0xBB, 0xBF] {
-        reader.seek(std::io::SeekFrom::Start(0))?;
-    };
+    let mut file = open_file(file_name)?;
 
     let mut buffer = vec![0u8; 1024 * 1024];
     let mut offset = 0usize;
 
     loop {
-        let len = reader.read(&mut buffer[offset..])?;
+        let len = file.read(&mut buffer[offset..])?;
         if len == 0 {
             break;
         }
